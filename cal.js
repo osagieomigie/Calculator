@@ -1,7 +1,8 @@
 
-var button; 
-var calScreen; 
-var result = 0;
+let button; 
+let calScreen; 
+let result = 0;
+let previousResult = 0;
 
 button = document.querySelectorAll(".btn");
 calScreen = document.querySelector("#tsx");
@@ -14,7 +15,7 @@ for(var i = 0; i<button.length; i++){
 			calScreen.innerText = "";
 		}
 
-		if(this.innerText === "AC"){
+		if(this.innerText === "C"){
 			calScreen.innerText = "0";
 		}
 		else{
@@ -26,14 +27,29 @@ for(var i = 0; i<button.length; i++){
 		
 		if(this.innerText === "="){
 			if(calScreen.innerText.length >= 3){
-					result = eval(calScreen.innerText);
-					calScreen.innerText = result;
-				} 
+				let screenContains = calScreen.innerText;
+				try{
+					let tmpBracket = screenContains.indexOf("(");
+
+					if (tmpBracket != -1 ){
+						
+						let tmpBracket_operator =screenContains.charAt(tmpBracket-1);
+
+						if ((tmpBracket_operator !== "+") || (tmpBracket_operator !== "-") || (tmpBracket_operator !== "/") || (tmpBracket_operator !== "*") ){
+							screenContains = screenContains.slice(0, tmpBracket) + "*" + screenContains.slice(tmpBracket);
+							//alert(screenContains);
+							result = eval(screenContains);
+							calScreen.innerText = result;
+							previousResult = screenContains;
+						}
+					}
+					
+					//previousResult = calScreen.innerText
+					console.log("The result: " + result);
+				}catch(error){
+					calScreen.innerText = previousResult + "=Syntax ERROR";
+				}
+			} 
 		}
 });
 }
-
-
-
-
-
