@@ -30,24 +30,34 @@ for(var i = 0; i<button.length; i++){
 				let screenContains = calScreen.innerText;
 				try{
 					let tmpBracket = screenContains.indexOf("(");
+					let tmpBracket_operator =screenContains.charAt(tmpBracket-1);
 
-					if (tmpBracket != -1 ){
-						
-						let tmpBracket_operator =screenContains.charAt(tmpBracket-1);
+					// check if expression uses brackets
+					if ((tmpBracket != -1 ) && (tmpBracket_operator != 0)){
 
-						if ((tmpBracket_operator !== "+") || (tmpBracket_operator !== "-") || (tmpBracket_operator !== "/") || (tmpBracket_operator !== "*") ){
+						if ((tmpBracket_operator !== "+") && (tmpBracket_operator !== "-") && (tmpBracket_operator !== "/") && (tmpBracket_operator !== "*") ){
 							screenContains = screenContains.slice(0, tmpBracket) + "*" + screenContains.slice(tmpBracket);
-							//alert(screenContains);
+							alert(screenContains);
+							result = eval(screenContains);
+							//previousResult = screenContains;
+							calScreen.innerText = result;
+						}else{
+							alert("Has operator");
+							alert(screenContains);
 							result = eval(screenContains);
 							calScreen.innerText = result;
-							previousResult = screenContains;
 						}
+					}else{
+						result = eval(screenContains);
+						calScreen.innerText = result;
 					}
 					
 					//previousResult = calScreen.innerText
+					
 					console.log("The result: " + result);
 				}catch(error){
-					calScreen.innerText = previousResult + "=Syntax ERROR";
+					//prevCalScreen.innerText = previousResult + "=Syntax ERROR";
+					calScreen.innerText = "Syntax ERROR";
 				}
 			} 
 		}
