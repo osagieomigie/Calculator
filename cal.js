@@ -5,8 +5,8 @@ let result = 0;
 let previousResult = 0;
 
 button = document.querySelectorAll(".btn");
-calScreen = document.querySelector("#resultScreen");
-
+calScreen = document.querySelector("#resultScreen"); 
+previousResult = document.querySelector("#prevResultScreen");
 
 for(var i = 0; i<button.length; i++){
 	button[i].addEventListener("click", function (button){
@@ -17,11 +17,13 @@ for(var i = 0; i<button.length; i++){
 
 		// handle CE case here
 		if(calScreen.innerText === "CE"){
-			//do something here 
+			//delete last digit from number
+			// carry answer to previous result screen.
 		}
 
 		if(this.innerText === "C"){
 			calScreen.innerText = "0";
+			previousResult.innerText = "Ans = "+result; 
 		}
 		else{
 
@@ -33,6 +35,7 @@ for(var i = 0; i<button.length; i++){
 		if(this.innerText === "="){
 			if(calScreen.innerText.length !== 0){
 				let screenContains = calScreen.innerText;
+				previousResult.innerText = screenContains+"=";
 				try{
 					let tmpBracket = screenContains.indexOf("(");
 					let closingBracket = screenContains.indexOf(")");
@@ -73,7 +76,7 @@ for(var i = 0; i<button.length; i++){
 					calScreen.innerText = result;
 					console.log("The result: " + result);
 				}catch(error){
-					//prevCalScreen.innerText = previousResult + "=Syntax ERROR";
+					previousResult.innerText = previousResult + "=Syntax ERROR";
 					calScreen.innerText = "Syntax ERROR";
 				}
 			}else{
