@@ -7,6 +7,7 @@ let previousResult = 0;
 button = document.querySelectorAll(".btn");
 calScreen = document.querySelector("#resultScreen"); 
 previousResult = document.querySelector("#prevResultScreen");
+let screenContains = calScreen.innerText;
 
 for(var i = 0; i<button.length; i++){
 	button[i].addEventListener("click", function (button){
@@ -16,9 +17,11 @@ for(var i = 0; i<button.length; i++){
 		}
 
 		// handle CE case here
-		if(calScreen.innerText === "CE"){
+		if(screenContains.includes("CE")){
 			//delete last digit from number
-			// carry answer to previous result screen.
+			// let deletePos = calScreen.length(); 
+			// calScreen = calScreen.slice(0, deletePos);
+			// console.log("clearing digit");
 		}
 
 		if(this.innerText === "C"){
@@ -26,7 +29,6 @@ for(var i = 0; i<button.length; i++){
 			previousResult.innerText = "Ans = "+result; 
 		}
 		else{
-
 			if(this.innerText != "="){
 				calScreen.innerText += this.innerText;
 			}
@@ -34,8 +36,8 @@ for(var i = 0; i<button.length; i++){
 		
 		if(this.innerText === "="){
 			if(calScreen.innerText.length !== 0){
-				let screenContains = calScreen.innerText;
 				previousResult.innerText = screenContains+"=";
+
 				try{
 					let tmpBracket = screenContains.indexOf("(");
 					let closingBracket = screenContains.indexOf(")");
@@ -43,6 +45,7 @@ for(var i = 0; i<button.length; i++){
 
 					// check if expression uses brackets
 					if ((tmpBracket != -1 ) && (tmpBracket_operator != 0)){
+
 						// check for closing brackets
 						if (closingBracket < 0 ){
 							console.log("No closing bracket");
@@ -51,22 +54,14 @@ for(var i = 0; i<button.length; i++){
 
 						if ((tmpBracket_operator !== "+") && (tmpBracket_operator !== "-") && (tmpBracket_operator !== "/") && (tmpBracket_operator !== "*") ){
 							screenContains = screenContains.slice(0, tmpBracket) + "*" + screenContains.slice(tmpBracket);
-							//alert(screenContains);
 							result = eval(screenContains);
 							//previousResult = screenContains;
-							//calScreen.innerText = result;
 						}else{
-							//alert("Has operator");
-							//alert(screenContains);
 							result = eval(screenContains);
-							//calScreen.innerText = result;
 						}
 					}else{
 						result = eval(screenContains);
-						//calScreen.innerText = result;
 					}
-					
-					//previousResult = calScreen.innerText
 
 					// captures the inifinity case from eval
 					if (result == "Infinity"){
@@ -74,14 +69,21 @@ for(var i = 0; i<button.length; i++){
 					}
 
 					calScreen.innerText = result;
+					previousResult.innerText = screenContains + "=";
 					console.log("The result: " + result);
 				}catch(error){
-					previousResult.innerText = previousResult + "=Syntax ERROR";
+					// handle case of when theres an error on the 1st calculation
+					if ( previousResult instanceof HTMLButtonElement){
+						previousResult.innerText = screenContains + "=Syntax ERROR";
+						previousResult = screenContains +  "=Syntax ERROR";
+					}else{
+						previousResult.innerText = previousResult + "=Syntax ERROR";
+					}
+
 					calScreen.innerText = "Syntax ERROR";
 				}
 			}else{
 				calScreen.innerText = "0";
-				// dp the repeating equal sign done in google calculator.
 			} 
 		}
 });
