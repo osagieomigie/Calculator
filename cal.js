@@ -13,7 +13,7 @@ for(var i = 0; i<button.length; i++){
 	button[i].addEventListener("click", function (button){
 
 		// clear screen before user starts entering input
-		if(calScreen.innerText === "0"){ 
+		if((calScreen.innerText === "0") || (calScreen.innerText === "ERROR")){ 
 			calScreen.innerText = "";
 		}
 
@@ -84,14 +84,14 @@ for(var i = 0; i<button.length; i++){
 				}catch(error){
 					// handle case of when theres an error on the 1st calculation
 					if ( previousResult instanceof HTMLButtonElement){
-						previousResult.innerText = screenContains + "=Syntax ERROR";
-						previousTmp = screenContains +  "=Syntax ERROR";
+						previousResult.innerText = screenContains + "=ERROR";
+						previousTmp = screenContains +  "=ERROR";
 					}else{
-						previousResult.innerText = previousResult + "=Syntax ERROR";
-						previousTmp = screenContains +  "=Syntax ERROR";
+						previousResult.innerText = previousResult + "=ERROR";
+						previousTmp = screenContains +  "=ERROR";
 					}
 
-					calScreen.innerText = "Syntax ERROR";
+					calScreen.innerText = "ERROR";
 				}
 			}else{
 				calScreen.innerText = "0";
