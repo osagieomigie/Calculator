@@ -73,7 +73,7 @@ for(var i = 0; i<button.length; i++){
 					}
 
 					// captures the inifinity case from eval
-					if (result == "Infinity"){
+					if ((result == "Infinity") || ((result == "-Infinity"))){
 						result = "ERROR";
 					}
 
